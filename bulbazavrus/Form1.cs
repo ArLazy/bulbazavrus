@@ -63,28 +63,44 @@ namespace bulbazavrus
                 // Левое листо - кривая Безье
                 var leftLeaf = new GraphicsPath();
                 leftLeaf.AddBezier(
-                    centerX - 40 * scale + profileOffsetX, centerY - 130 * scale,  // Начало
-                    centerX - 80 * scale + profileOffsetX, centerY - 160 * scale,  // Контрольная точка 1
-                    centerX - 100 * scale + profileOffsetX, centerY - 140 * scale, // Контрольная точка 2
-                    centerX - 60 * scale + profileOffsetX, centerY - 110 * scale   // Конец
+                    centerX + 30 * scale + profileOffsetX, centerY - 120 * scale,  // Начало
+                    centerX - 100 * scale + profileOffsetX, centerY - 180 * scale,  // Контрольная точка 1
+                    centerX + 100 * scale + profileOffsetX, centerY - 150 * scale, // Контрольная точка 2
+                    centerX + 60 * scale + profileOffsetX, centerY - 100 * scale   // Конец
                 );
                 g.FillPath(leafBrush, leftLeaf);
 
                 // Правое листо - кривая Безье
                 var rightLeaf = new GraphicsPath();
                 rightLeaf.AddBezier(
-                    centerX + 40 * scale + profileOffsetX, centerY - 130 * scale,
-                    centerX + 80 * scale + profileOffsetX, centerY - 160 * scale,
-                    centerX + 100 * scale + profileOffsetX, centerY - 140 * scale,
-                    centerX + 60 * scale + profileOffsetX, centerY - 110 * scale
+                    centerX - 20 * scale + profileOffsetX, centerY - 120 * scale,
+                    centerX + 110 * scale + profileOffsetX, centerY - 180 * scale,
+                    centerX - 90 * scale + profileOffsetX, centerY - 150 * scale,
+                    centerX - 50 * scale + profileOffsetX, centerY - 100 * scale
                 );
                 g.FillPath(leafBrush, rightLeaf);
+            }
+
+
+
+
+
+            // [Строки 303-314] Задние лапы (овалы, больше передних)
+            using (var hindLegBrush = new SolidBrush(Color.FromArgb(0x4A, 0xC7, 0x8A)))
+            {
+                var leftHindLeg = new GraphicsPath();
+                leftHindLeg.AddEllipse(centerX - 105 * scale + profileOffsetX, centerY + 50 * scale, 40 * scale, 50 * scale);
+                g.FillPath(hindLegBrush, leftHindLeg);
+
+                var rightHindLeg = new GraphicsPath();
+                rightHindLeg.AddEllipse(centerX + 70 * scale + profileOffsetX, centerY + 50 * scale, 40 * scale, 50 * scale);
+                g.FillPath(hindLegBrush, rightHindLeg);
             }
 
             // ═══════════════════════════════════════════════════════════════════
             // ТЕЛО
             // ═══════════════════════════════════════════════════════════════════
-            
+
             // [Строки 76-82] Тело - основной бирюзово-зелёный цвет (эллипс)
             using (var bodyBrush = new SolidBrush(Color.FromArgb(0x4A, 0xC7, 0x8A)))
             {
@@ -172,9 +188,9 @@ namespace bulbazavrus
                 var leftEar = new GraphicsPath();
                 leftEar.AddPolygon(new PointF[]
                 {
-                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 75 * scale),  // Низ
-                    new PointF(centerX - 95 * scale + profileOffsetX, centerY - 115 * scale), // Вершина
-                    new PointF(centerX - 50 * scale + profileOffsetX, centerY - 80 * scale)   // Низ
+                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 55 * scale),  // Низ
+                    new PointF(centerX - 85 * scale + profileOffsetX, centerY - 80 * scale), // Вершина
+                    new PointF(centerX - 50 * scale + profileOffsetX, centerY - 60 * scale)   // Низ
                 });
                 g.FillPath(earBrush, leftEar);
 
@@ -182,9 +198,9 @@ namespace bulbazavrus
                 var rightEar = new GraphicsPath();
                 rightEar.AddPolygon(new PointF[]
                 {
-                    new PointF(centerX + 70 * scale + profileOffsetX, centerY - 75 * scale),
-                    new PointF(centerX + 95 * scale + profileOffsetX, centerY - 115 * scale),
-                    new PointF(centerX + 50 * scale + profileOffsetX, centerY - 80 * scale)
+                    new PointF(centerX + 70 * scale + profileOffsetX, centerY - 55 * scale),
+                    new PointF(centerX + 85 * scale + profileOffsetX, centerY - 80 * scale),
+                    new PointF(centerX + 50 * scale + profileOffsetX, centerY - 60 * scale)
                 });
                 g.FillPath(earBrush, rightEar);
             }
@@ -195,20 +211,20 @@ namespace bulbazavrus
                 var leftEarOutline = new GraphicsPath();
                 leftEarOutline.AddPolygon(new PointF[]
                 {
-                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 75 * scale),
-                    new PointF(centerX - 95 * scale + profileOffsetX, centerY - 115 * scale),
-                    new PointF(centerX - 50 * scale + profileOffsetX, centerY - 80 * scale),
-                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 75 * scale)  // Замыкаем
+                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 55 * scale),
+                    new PointF(centerX - 85 * scale + profileOffsetX, centerY - 80 * scale),
+                    new PointF(centerX - 50 * scale + profileOffsetX, centerY - 60 * scale),
+                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 55 * scale)  // Замыкаем
                 });
                 g.DrawPath(earOutline, leftEarOutline);
 
                 var rightEarOutline = new GraphicsPath();
                 rightEarOutline.AddPolygon(new PointF[]
                 {
-                    new PointF(centerX + 70 * scale + profileOffsetX, centerY - 75 * scale),
-                    new PointF(centerX + 95 * scale + profileOffsetX, centerY - 115 * scale),
-                    new PointF(centerX + 50 * scale + profileOffsetX, centerY - 80 * scale),
-                    new PointF(centerX + 70 * scale + profileOffsetX, centerY - 75 * scale)  // Замыкаем
+                    new PointF(centerX + 70 * scale + profileOffsetX, centerY - 55 * scale),
+                    new PointF(centerX + 85 * scale + profileOffsetX, centerY - 80 * scale),
+                    new PointF(centerX + 50 * scale + profileOffsetX, centerY - 60 * scale),
+                    new PointF(centerX + 70 * scale + profileOffsetX, centerY - 55 * scale)  // Замыкаем
                 });
                 g.DrawPath(earOutline, rightEarOutline);
             }
@@ -289,17 +305,17 @@ namespace bulbazavrus
                 // Левый зуб
                 g.FillPolygon(toothBrush, new PointF[]
                 {
-                    new PointF(centerX - 35 * scale + profileOffsetX, centerY - 5 * scale),   // Верх лево
-                    new PointF(centerX - 25 * scale + profileOffsetX, centerY - 5 * scale),   // Верх право
-                    new PointF(centerX - 30 * scale + profileOffsetX, centerY + 8 * scale)    // Низ (вершина)
+                    new PointF(centerX - 35 * scale + profileOffsetX, centerY + 5 * scale),   // Верх лево
+                    new PointF(centerX - 25 * scale + profileOffsetX, centerY + 5 * scale),   // Верх право
+                    new PointF(centerX - 30 * scale + profileOffsetX, centerY + 14 * scale)    // Низ (вершина)
                 });
 
                 // Правый зуб
                 g.FillPolygon(toothBrush, new PointF[]
                 {
-                    new PointF(centerX + 25 * scale + profileOffsetX, centerY - 5 * scale),
-                    new PointF(centerX + 35 * scale + profileOffsetX, centerY - 5 * scale),
-                    new PointF(centerX + 30 * scale + profileOffsetX, centerY + 8 * scale)
+                    new PointF(centerX + 25 * scale + profileOffsetX, centerY + 5 * scale),
+                    new PointF(centerX + 35 * scale + profileOffsetX, centerY + 5 * scale),
+                    new PointF(centerX + 30 * scale + profileOffsetX, centerY + 14 * scale)
                 });
             }
 
@@ -341,25 +357,15 @@ namespace bulbazavrus
                 g.FillPath(legBrush, rightFrontLeg);
             }
 
-            // [Строки 303-314] Задние лапы (овалы, больше передних)
-            using (var hindLegBrush = new SolidBrush(Color.FromArgb(0x4A, 0xC7, 0x8A)))
-            {
-                var leftHindLeg = new GraphicsPath();
-                leftHindLeg.AddEllipse(centerX - 115 * scale + profileOffsetX, centerY + 50 * scale, 40 * scale, 50 * scale);
-                g.FillPath(hindLegBrush, leftHindLeg);
-
-                var rightHindLeg = new GraphicsPath();
-                rightHindLeg.AddEllipse(centerX + 70 * scale + profileOffsetX, centerY + 50 * scale, 40 * scale, 50 * scale);
-                g.FillPath(hindLegBrush, rightHindLeg);
-            }
+            
 
             // [Строки 317-323] Пятна на лапах (тёмно-зелёные)
             using (var spotBrush = new SolidBrush(Color.FromArgb(0x1E, 0x6B, 0x4A)))
             {
-                g.FillEllipse(spotBrush, centerX - 80 * scale + profileOffsetX, centerY + 80 * scale, 20 * scale, 15 * scale);
+                g.FillEllipse(spotBrush, centerX - 75 * scale + profileOffsetX, centerY + 80 * scale, 20 * scale, 15 * scale);
                 g.FillEllipse(spotBrush, centerX + 45 * scale + profileOffsetX, centerY + 80 * scale, 18 * scale, 14 * scale);
-                g.FillEllipse(spotBrush, centerX - 110 * scale + profileOffsetX, centerY + 60 * scale, 22 * scale, 16 * scale);
-                g.FillEllipse(spotBrush, centerX + 75 * scale + profileOffsetX, centerY + 60 * scale, 20 * scale, 15 * scale);
+                g.FillEllipse(spotBrush, centerX - 100 * scale + profileOffsetX, centerY + 60 * scale, 22 * scale, 16 * scale);
+                g.FillEllipse(spotBrush, centerX + 82 * scale + profileOffsetX, centerY + 60 * scale, 20 * scale, 15 * scale);
             }
 
             // ═══════════════════════════════════════════════════════════════════
