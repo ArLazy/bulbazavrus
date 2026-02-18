@@ -20,21 +20,28 @@ namespace bulbazavrus
             this.ResizeRedraw = true;
         }
 
+        /// <summary>
+        /// Обработчик события Paint - рисование Бульбазавра
+        /// </summary>
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-            int centerX = ClientSize.Width / 2;
-            int centerY = ClientSize.Height / 2;
-            float scale = Math.Min(ClientSize.Width, ClientSize.Height) / 400f;
+            int centerX = ClientSize.Width / 2;          // Центр экрана по X
+            int centerY = ClientSize.Height / 2;         // Центр экрана по Y
+            float scale = Math.Min(ClientSize.Width, ClientSize.Height) / 400f;  // Масштаб
 
-            // Смещение для профиля (поворот влево)
+            // Смещение для профиля (поворот влево) - отрицательное значение = поворот влево
             float profileOffsetX = -15 * scale;
 
             Graphics g = e.Graphics;
 
-            // Луковица на спине (темно-зеленая основа)
+            // ═══════════════════════════════════════════════════════════════════
+            // ЛУКОВИЦА НА СПИНЕ
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 38-43] Луковица - тёмная основа (нижняя часть)
             using (var bulbDark = new SolidBrush(Color.FromArgb(0x2E, 0x8B, 0x57)))
             {
                 var bulbPath = new GraphicsPath();
@@ -42,7 +49,7 @@ namespace bulbazavrus
                 g.FillPath(bulbDark, bulbPath);
             }
 
-            // Луковица на спине (светло-зеленая верхняя часть)
+            // [Строки 45-50] Луковица - светлая верхняя часть
             using (var bulbLight = new SolidBrush(Color.FromArgb(0x3C, 0xB3, 0x71)))
             {
                 var bulbTopPath = new GraphicsPath();
@@ -50,20 +57,20 @@ namespace bulbazavrus
                 g.FillPath(bulbLight, bulbTopPath);
             }
 
-            // Листья луковицы
+            // [Строки 52-73] Листья луковицы (два листа по бокам)
             using (var leafBrush = new SolidBrush(Color.FromArgb(0x22, 0x8B, 0x22)))
             {
-                // Левое листо
+                // Левое листо - кривая Безье
                 var leftLeaf = new GraphicsPath();
                 leftLeaf.AddBezier(
-                    centerX - 40 * scale + profileOffsetX, centerY - 130 * scale,
-                    centerX - 80 * scale + profileOffsetX, centerY - 160 * scale,
-                    centerX - 100 * scale + profileOffsetX, centerY - 140 * scale,
-                    centerX - 60 * scale + profileOffsetX, centerY - 110 * scale
+                    centerX - 40 * scale + profileOffsetX, centerY - 130 * scale,  // Начало
+                    centerX - 80 * scale + profileOffsetX, centerY - 160 * scale,  // Контрольная точка 1
+                    centerX - 100 * scale + profileOffsetX, centerY - 140 * scale, // Контрольная точка 2
+                    centerX - 60 * scale + profileOffsetX, centerY - 110 * scale   // Конец
                 );
                 g.FillPath(leafBrush, leftLeaf);
 
-                // Правое листо
+                // Правое листо - кривая Безье
                 var rightLeaf = new GraphicsPath();
                 rightLeaf.AddBezier(
                     centerX + 40 * scale + profileOffsetX, centerY - 130 * scale,
@@ -74,7 +81,11 @@ namespace bulbazavrus
                 g.FillPath(leafBrush, rightLeaf);
             }
 
-            // Тело (основной бирюзово-зеленый цвет) - эллипс со смещением для профиля
+            // ═══════════════════════════════════════════════════════════════════
+            // ТЕЛО
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 76-82] Тело - основной бирюзово-зелёный цвет (эллипс)
             using (var bodyBrush = new SolidBrush(Color.FromArgb(0x4A, 0xC7, 0x8A)))
             {
                 var bodyPath = new GraphicsPath();
@@ -82,7 +93,7 @@ namespace bulbazavrus
                 g.FillPath(bodyBrush, bodyPath);
             }
 
-            // Контур тела (outline)
+            // [Строки 85-91] Контур тела (outline) - тёмно-зелёная обводка
             using (var bodyOutline = new Pen(Color.FromArgb(0x1E, 0x6B, 0x4A), 3 * scale))
             {
                 bodyOutline.LineJoin = LineJoin.Round;
@@ -91,8 +102,19 @@ namespace bulbazavrus
                 g.DrawPath(bodyOutline, bodyOutlinePath);
             }
 
-            // Голова - объединена с телом (без отдельной отрисовки, сливается)
-            // Контур головы (outline) - чтобы не сливалась с телом
+            // ═══════════════════════════════════════════════════════════════════
+            // ГОЛОВА
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 94-100] Голова - заливка (бирюзово-зелёный, как тело)
+            using (var headBrush = new SolidBrush(Color.FromArgb(0x4A, 0xC7, 0x8A)))
+            {
+                var headPath = new GraphicsPath();
+                headPath.AddEllipse(centerX - 85 * scale + profileOffsetX, centerY - 90 * scale, 170 * scale, 130 * scale);
+                g.FillPath(headBrush, headPath);
+            }
+
+            // [Строки 103-109] Контур головы (outline) - чтобы не сливалась с телом
             using (var headOutline = new Pen(Color.FromArgb(0x1E, 0x6B, 0x4A), 3 * scale))
             {
                 headOutline.LineJoin = LineJoin.Round;
@@ -101,10 +123,14 @@ namespace bulbazavrus
                 g.DrawPath(headOutline, headOutlinePath);
             }
 
-            // Пятна на теле (темно-зеленые)
+            // ═══════════════════════════════════════════════════════════════════
+            // ПЯТНА НА ТЕЛЕ И ГОЛОВЕ (тёмно-зелёные)
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 112-137] Пятна
             using (var spotBrush = new SolidBrush(Color.FromArgb(0x1E, 0x6B, 0x4A)))
             {
-                // Пятно на лбу
+                // Пятно на лбу (треугольное, по центру)
                 var foreheadSpot = new GraphicsPath();
                 foreheadSpot.AddEllipse(centerX - 20 * scale + profileOffsetX, centerY - 75 * scale, 25 * scale, 18 * scale);
                 g.FillPath(spotBrush, foreheadSpot);
@@ -119,32 +145,40 @@ namespace bulbazavrus
                 rightHeadSpot.AddEllipse(centerX + 45 * scale + profileOffsetX, centerY - 50 * scale, 22 * scale, 16 * scale);
                 g.FillPath(spotBrush, rightHeadSpot);
 
-                // Пятна на теле
+                // Пятно на теле (слева внизу)
                 var bodySpot1 = new GraphicsPath();
                 bodySpot1.AddEllipse(centerX - 70 * scale + profileOffsetX, centerY + 10 * scale, 30 * scale, 25 * scale);
                 g.FillPath(spotBrush, bodySpot1);
 
+                // Пятно на теле (справа)
                 var bodySpot2 = new GraphicsPath();
                 bodySpot2.AddEllipse(centerX + 50 * scale + profileOffsetX, centerY + 20 * scale, 28 * scale, 22 * scale);
                 g.FillPath(spotBrush, bodySpot2);
 
+                // Пятно на теле (внизу по центру)
                 var bodySpot3 = new GraphicsPath();
                 bodySpot3.AddEllipse(centerX - 30 * scale + profileOffsetX, centerY + 40 * scale, 25 * scale, 20 * scale);
                 g.FillPath(spotBrush, bodySpot3);
             }
 
-            // Уши - прикреплены к голове
+            // ═══════════════════════════════════════════════════════════════════
+            // УШИ
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 140-159] Уши - заливка (треугольники)
             using (var earBrush = new SolidBrush(Color.FromArgb(0x4A, 0xC7, 0x8A)))
             {
+                // Левое ухо
                 var leftEar = new GraphicsPath();
                 leftEar.AddPolygon(new PointF[]
                 {
-                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 75 * scale),
-                    new PointF(centerX - 95 * scale + profileOffsetX, centerY - 115 * scale),
-                    new PointF(centerX - 50 * scale + profileOffsetX, centerY - 80 * scale)
+                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 75 * scale),  // Низ
+                    new PointF(centerX - 95 * scale + profileOffsetX, centerY - 115 * scale), // Вершина
+                    new PointF(centerX - 50 * scale + profileOffsetX, centerY - 80 * scale)   // Низ
                 });
                 g.FillPath(earBrush, leftEar);
 
+                // Правое ухо
                 var rightEar = new GraphicsPath();
                 rightEar.AddPolygon(new PointF[]
                 {
@@ -155,7 +189,7 @@ namespace bulbazavrus
                 g.FillPath(earBrush, rightEar);
             }
 
-            // Контур ушей
+            // [Строки 162-183] Контур ушей (тёмно-зелёная обводка)
             using (var earOutline = new Pen(Color.FromArgb(0x1E, 0x6B, 0x4A), 2 * scale))
             {
                 var leftEarOutline = new GraphicsPath();
@@ -164,7 +198,7 @@ namespace bulbazavrus
                     new PointF(centerX - 70 * scale + profileOffsetX, centerY - 75 * scale),
                     new PointF(centerX - 95 * scale + profileOffsetX, centerY - 115 * scale),
                     new PointF(centerX - 50 * scale + profileOffsetX, centerY - 80 * scale),
-                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 75 * scale)
+                    new PointF(centerX - 70 * scale + profileOffsetX, centerY - 75 * scale)  // Замыкаем
                 });
                 g.DrawPath(earOutline, leftEarOutline);
 
@@ -174,12 +208,16 @@ namespace bulbazavrus
                     new PointF(centerX + 70 * scale + profileOffsetX, centerY - 75 * scale),
                     new PointF(centerX + 95 * scale + profileOffsetX, centerY - 115 * scale),
                     new PointF(centerX + 50 * scale + profileOffsetX, centerY - 80 * scale),
-                    new PointF(centerX + 70 * scale + profileOffsetX, centerY - 75 * scale)
+                    new PointF(centerX + 70 * scale + profileOffsetX, centerY - 75 * scale)  // Замыкаем
                 });
                 g.DrawPath(earOutline, rightEarOutline);
             }
 
-            // Глаза (белки) - смещены для профиля
+            // ═══════════════════════════════════════════════════════════════════
+            // ГЛАЗА
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 186-197] Белки глаз (овалы)
             using (var eyeWhiteBrush = new SolidBrush(Color.White))
             {
                 var leftEyeWhite = new GraphicsPath();
@@ -191,7 +229,7 @@ namespace bulbazavrus
                 g.FillPath(eyeWhiteBrush, rightEyeWhite);
             }
 
-            // Глаза (радужка - красная)
+            // [Строки 200-210] Радужка (красная)
             using (var irisBrush = new SolidBrush(Color.FromArgb(0xE5, 0x3F, 0x52)))
             {
                 var leftIris = new GraphicsPath();
@@ -203,13 +241,15 @@ namespace bulbazavrus
                 g.FillPath(irisBrush, rightIris);
             }
 
-            // Зрачки (черные)
+            // [Строки 213-225] Зрачки (чёрные) + блики (белые)
             using (var pupilBrush = new SolidBrush(Color.Black))
             {
+                // Левый зрачок
                 g.FillEllipse(pupilBrush, centerX - 47 * scale + profileOffsetX, centerY - 38 * scale, 12 * scale, 15 * scale);
+                // Правый зрачок
                 g.FillEllipse(pupilBrush, centerX + 28 * scale + profileOffsetX, centerY - 38 * scale, 12 * scale, 15 * scale);
 
-                // Блик в глазах
+                // Блик в глазах (для живого взгляда)
                 using (var highlightBrush = new SolidBrush(Color.White))
                 {
                     g.FillEllipse(highlightBrush, centerX - 43 * scale + profileOffsetX, centerY - 42 * scale, 6 * scale, 6 * scale);
@@ -217,66 +257,79 @@ namespace bulbazavrus
                 }
             }
 
-            // Пасть - перевернута для улыбки (дуга вверх)
+            // ═══════════════════════════════════════════════════════════════════
+            // ПАСТЬ И УЛЫБКА
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 228-234] Контур улыбки (дуга)
             using (var mouthPen = new Pen(Color.FromArgb(0x1a1a1a), 3 * scale))
             {
                 mouthPen.LineJoin = LineJoin.Round;
-                // Улыбка - дуга направленная вверх
-                g.DrawArc(mouthPen, centerX - 50 * scale + profileOffsetX, centerY + 5 * scale, 100 * scale, 40 * scale, 200, 140);
+                // Параметры: (x, y, ширина, высота, угол начала, угол дуги)
+                g.DrawArc(mouthPen, centerX - 50 * scale + profileOffsetX, centerY - 25 * scale, 100 * scale, 50 * scale, 180, -160);
             }
 
-            // Внутренняя часть пасти (розовая) - заполненная улыбка
+            // [Строки 237-245] Внутренняя часть пасти (розовая заливка)
             using (var mouthFillBrush = new SolidBrush(Color.FromArgb(0xF0, 0xA0, 0xC0)))
             {
                 var mouthFillPath = new GraphicsPath();
-                mouthFillPath.AddArc(centerX - 48 * scale + profileOffsetX, centerY + 7 * scale, 96 * scale, 35 * scale, 200, 140);
-                mouthFillPath.CloseFigure();
+                mouthFillPath.AddArc(centerX - 50 * scale + profileOffsetX, centerY - 25 * scale, 100 * scale, 50 * scale, 180, -160);
+                mouthFillPath.AddLine(centerX + 45 * scale + profileOffsetX, centerY + 5 * scale, centerX - 45 * scale + profileOffsetX, centerY + 5 * scale);
+                mouthFillPath.CloseFigure();  // Замыкаем контур
                 g.FillPath(mouthFillBrush, mouthFillPath);
             }
 
-            // Зубы - увеличенные и поднятые выше (теперь во рту)
+            // ═══════════════════════════════════════════════════════════════════
+            // ЗУБЫ
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 248-264] Зубы (два треугольника)
             using (var toothBrush = new SolidBrush(Color.White))
             {
-                // Левый зуб (больше и выше)
-                g.FillPolygon(toothBrush, new PointF[]
-                {
-                    new PointF(centerX - 35 * scale + profileOffsetX, centerY + 5 * scale),
-                    new PointF(centerX - 25 * scale + profileOffsetX, centerY + 5 * scale),
-                    new PointF(centerX - 30 * scale + profileOffsetX, centerY + 14 * scale)
-                });
-
-                // Правый зуб (больше и выше)
-                g.FillPolygon(toothBrush, new PointF[]
-                {
-                    new PointF(centerX + 25 * scale + profileOffsetX, centerY + 5 * scale),
-                    new PointF(centerX + 35 * scale + profileOffsetX, centerY + 5 * scale),
-                    new PointF(centerX + 30 * scale + profileOffsetX, centerY + 14 * scale)
-                });
-            }
-
-            // Контур зубов
-            using (var toothOutline = new Pen(Color.FromArgb(0xCCCCCC), 1 * scale))
-            {
                 // Левый зуб
-                g.DrawPolygon(toothOutline, new PointF[]
+                g.FillPolygon(toothBrush, new PointF[]
                 {
-                    new PointF(centerX - 35 * scale + profileOffsetX, centerY + 5 * scale),
-                    new PointF(centerX - 25 * scale + profileOffsetX, centerY + 5 * scale),
-                    new PointF(centerX - 30 * scale + profileOffsetX, centerY + 14 * scale),
-                    new PointF(centerX - 35 * scale + profileOffsetX, centerY + 5 * scale)
+                    new PointF(centerX - 35 * scale + profileOffsetX, centerY - 5 * scale),   // Верх лево
+                    new PointF(centerX - 25 * scale + profileOffsetX, centerY - 5 * scale),   // Верх право
+                    new PointF(centerX - 30 * scale + profileOffsetX, centerY + 8 * scale)    // Низ (вершина)
                 });
 
                 // Правый зуб
-                g.DrawPolygon(toothOutline, new PointF[]
+                g.FillPolygon(toothBrush, new PointF[]
                 {
-                    new PointF(centerX + 25 * scale + profileOffsetX, centerY + 5 * scale),
-                    new PointF(centerX + 35 * scale + profileOffsetX, centerY + 5 * scale),
-                    new PointF(centerX + 30 * scale + profileOffsetX, centerY + 14 * scale),
-                    new PointF(centerX + 25 * scale + profileOffsetX, centerY + 5 * scale)
+                    new PointF(centerX + 25 * scale + profileOffsetX, centerY - 5 * scale),
+                    new PointF(centerX + 35 * scale + profileOffsetX, centerY - 5 * scale),
+                    new PointF(centerX + 30 * scale + profileOffsetX, centerY + 8 * scale)
                 });
             }
 
-            // Передние лапы - смещены для профиля
+            // [Строки 267-286] Контур зубов (светло-серый)
+            using (var toothOutline = new Pen(Color.FromArgb(0xCCCCCC), 1 * scale))
+            {
+                // Левый зуб - контур
+                g.DrawPolygon(toothOutline, new PointF[]
+                {
+                    new PointF(centerX - 35 * scale + profileOffsetX, centerY - 5 * scale),
+                    new PointF(centerX - 25 * scale + profileOffsetX, centerY - 5 * scale),
+                    new PointF(centerX - 30 * scale + profileOffsetX, centerY + 8 * scale),
+                    new PointF(centerX - 35 * scale + profileOffsetX, centerY - 5 * scale)  // Замыкаем
+                });
+
+                // Правый зуб - контур
+                g.DrawPolygon(toothOutline, new PointF[]
+                {
+                    new PointF(centerX + 25 * scale + profileOffsetX, centerY - 5 * scale),
+                    new PointF(centerX + 35 * scale + profileOffsetX, centerY - 5 * scale),
+                    new PointF(centerX + 30 * scale + profileOffsetX, centerY + 8 * scale),
+                    new PointF(centerX + 25 * scale + profileOffsetX, centerY - 5 * scale)  // Замыкаем
+                });
+            }
+
+            // ═══════════════════════════════════════════════════════════════════
+            // ЛАПЫ
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 289-300] Передние лапы (овалы)
             using (var legBrush = new SolidBrush(Color.FromArgb(0x4A, 0xC7, 0x8A)))
             {
                 var leftFrontLeg = new GraphicsPath();
@@ -288,7 +341,7 @@ namespace bulbazavrus
                 g.FillPath(legBrush, rightFrontLeg);
             }
 
-            // Задние лапы - смещены для профиля
+            // [Строки 303-314] Задние лапы (овалы, больше передних)
             using (var hindLegBrush = new SolidBrush(Color.FromArgb(0x4A, 0xC7, 0x8A)))
             {
                 var leftHindLeg = new GraphicsPath();
@@ -300,7 +353,7 @@ namespace bulbazavrus
                 g.FillPath(hindLegBrush, rightHindLeg);
             }
 
-            // Пятна на лапах
+            // [Строки 317-323] Пятна на лапах (тёмно-зелёные)
             using (var spotBrush = new SolidBrush(Color.FromArgb(0x1E, 0x6B, 0x4A)))
             {
                 g.FillEllipse(spotBrush, centerX - 80 * scale + profileOffsetX, centerY + 80 * scale, 20 * scale, 15 * scale);
@@ -309,17 +362,21 @@ namespace bulbazavrus
                 g.FillEllipse(spotBrush, centerX + 75 * scale + profileOffsetX, centerY + 60 * scale, 20 * scale, 15 * scale);
             }
 
-            // Когти (белые)
+            // ═══════════════════════════════════════════════════════════════════
+            // КОГТИ
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 326-339] Когти (белые овалы, по 3 на каждой лапе)
             using (var clawBrush = new SolidBrush(Color.FromArgb(0xF5, 0xF5, 0xF5)))
             {
-                // Передние когти
+                // Передние когти (левая и правая лапы)
                 for (int i = 0; i < 3; i++)
                 {
                     g.FillEllipse(clawBrush, centerX - 83 * scale + profileOffsetX + i * 10 * scale, centerY + 110 * scale, 5 * scale, 6 * scale);
                     g.FillEllipse(clawBrush, centerX + 42 * scale + profileOffsetX + i * 10 * scale, centerY + 110 * scale, 5 * scale, 6 * scale);
                 }
 
-                // Задние когти
+                // Задние когти (левая и правая лапы)
                 for (int i = 0; i < 3; i++)
                 {
                     g.FillEllipse(clawBrush, centerX - 113 * scale + profileOffsetX + i * 10 * scale, centerY + 95 * scale, 5 * scale, 6 * scale);
@@ -327,7 +384,11 @@ namespace bulbazavrus
                 }
             }
 
-            // Ноздри
+            // ═══════════════════════════════════════════════════════════════════
+            // НОЗДРИ
+            // ═══════════════════════════════════════════════════════════════════
+            
+            // [Строки 342-346] Ноздри (две маленькие точки)
             using (var nostrilBrush = new SolidBrush(Color.FromArgb(0x1a1a1a)))
             {
                 g.FillEllipse(nostrilBrush, centerX - 20 * scale + profileOffsetX, centerY + 5 * scale, 4 * scale, 3 * scale);
