@@ -1,0 +1,10 @@
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\bin\Debug\bulbazavrus.exe.config
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\bin\Debug\bulbazavrus.exe
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\bin\Debug\bulbazavrus.pdb
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\obj\Debug\bulbazavrus.csproj.AssemblyReference.cache
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\obj\Debug\bulbazavrus.Form1.resources
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\obj\Debug\bulbazavrus.Properties.Resources.resources
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\obj\Debug\bulbazavrus.csproj.GenerateResource.cache
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\obj\Debug\bulbazavrus.csproj.CoreCompileInputs.cache
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\obj\Debug\bulbazavrus.exe
+d:\VisualStudioProj\bulbic\bulbazavrus\bulbazavrus\obj\Debug\bulbazavrus.pdb
